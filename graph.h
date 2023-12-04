@@ -43,6 +43,28 @@ struct Edge {
     }
 };
 
+class City {
+public:
+    string ID;
+    string City_Code;
+    string City_Name;
+    int Population;
+    int Elevation;
+
+    City(string id, string code, string name, int population, int elevation)
+        : ID(id), City_Code(code), City_Name(name), Population(population), Elevation(elevation) {}
+};
+
+class Road {
+public:
+    string From_City;
+    string To_City;
+    int Distance;
+
+    Road(string from, string to, int distance)
+        : From_City(from), To_City(to), Distance(distance) {}
+};
+
 /**
  * @brief Graph class
  *
@@ -123,4 +145,6 @@ public:
     void printGraph();
 
 };
+
+
 
