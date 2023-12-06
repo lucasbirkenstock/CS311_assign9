@@ -7,10 +7,10 @@
 Graph::Graph(int nV)
 {
     // Set member var
-    numVerts = nV;
+    numCities = nV;
     // Vectors don't require  manual memory allocation and deallocation
     adjList.resize(nV);
-    vertices.resize(nV);
+    citiesList.resize(nV);
 }
 
 // @brief destructor
@@ -20,38 +20,38 @@ Graph::~Graph()
 }
 
 // @brief add a vertex to the graph
-void Graph::addVertex(Vertex v)
+void Graph::addCity(City c)
 {
     // Add a vertex to the vertex vector
-    vertices.push_back(v);
+    citiesList.push_back(c);
     // Add an empty list to the adjacency list
-    adjList.push_back(std::vector<Edge>());
+    adjList.push_back(std::vector<Road>());
     // Increment the number of vertices
-    numVerts++;
+    numCities++;
 }
 
 // @brief add a directed edge v1->v2 to the graph
-void Graph::addDirectedEdge(int v1, int v2, float weight)
+void Graph::addDirectedRoad(int v1, int v2, float weight)
 {
     // Create a new edge in accordance with input
-    Edge directedEdge(v1, v2, weight);
+    Road directedRoad(v1, v2, weight);
 
     // Add this new edge to the adjacency list
-    adjList[v1].push_back(directedEdge);
+    adjList[v1].push_back(directedRoad);
 }
 
 // @brief add an undirected edge to the graph
-void Graph::addUndirectedEdge(int v1, int v2, float weight)
+void Graph::addUndirectedRoad(int v1, int v2, float weight)
 {
     // Same thing as other function, but both ways
 
     // Add edge v1->v2
-    Edge edge1(v1, v2, weight);
-    adjList[v1].push_back(edge1);
+    Road road1(v1, v2, weight);
+    adjList[v1].push_back(road1);
 
     // Add edge v2->v1
-    Edge edge2(v2, v1, weight);
-    adjList[v2].push_back(edge2);
+    Road road2(v2, v1, weight);
+    adjList[v2].push_back(road2);
 }
 
 // @brief the number of outgoing edges from a vertex
@@ -65,7 +65,7 @@ int Graph::outDegree(int v)
 // @brief depth first search from vertex v
 vector<int> Graph::DepthFirstSearch(int v) {
     // Store list denoting visited nodes
-    std::vector<bool> visited(numVerts, false);
+    std::vector<bool> visited(numCities, false);
     // Return vector
     std::vector<int> result;
     // Stack for implementing algorithm
@@ -77,21 +77,21 @@ vector<int> Graph::DepthFirstSearch(int v) {
     // While the stack isn't empty:
     while (!stack.empty()) {
         // Examine the first node popped off the stack
-        int currentVertex = stack.top();
+        int currentCity = stack.top();
         stack.pop();
 
         // If this particular popped node isn't visited,
-        if (!visited[currentVertex]) {
+        if (!visited[currentCity]) {
             // Mark it as visited
-            visited[currentVertex] = true;
+            visited[currentCity] = true;
             // Add it to the result list
-            result.push_back(currentVertex);
+            result.push_back(currentCity);
 
             // Sort the neighbors before pushing them onto the stack (fixes autograder problem)
             // Make a new vector to store all neighbors of a current vertex, then use std::sort with ascending order.
             std::vector<int> neighbors;
-            for (const Edge& edge : adjList[currentVertex]) {
-                int neighbor = edge.to_vertex;
+            for (const Road& road : adjList[currentCity]) {
+                int neighbor = road.destination_city_index;
                 if (!visited[neighbor]) {
                     neighbors.push_back(neighbor);
                 }
@@ -111,7 +111,7 @@ vector<int> Graph::DepthFirstSearch(int v) {
 // @brief breadth first search from a vertex
 std::vector<int> Graph::BreadthFirstSearch(int v) {
     // Store visited vertices list
-    std::vector<bool> visited(numVerts, false);
+    std::vector<bool> visited(numCities, false);
     // Return vector
     std::vector<int> result;
     // Queue for algorithm
@@ -125,16 +125,16 @@ std::vector<int> Graph::BreadthFirstSearch(int v) {
     // While there is a vertex in the queue, 
     while (!queue.empty()) {
         // Examine the vertex at the front, remove it from the queue
-        int currentVertex = queue.front();
+        int currentCity = queue.front();
         queue.pop();
 
         // Add examined vertex to the result list
-        result.push_back(currentVertex);
+        result.push_back(currentCity);
 
         // For each edge in the adjacency list of the currently examined vertex,
-        for (const Edge& edge : adjList[currentVertex]) {
+        for (const Road& road : adjList[currentCity]) {
             // Store the index of an adjacent vertex as "neighbor"
-            int neighbor = edge.to_vertex;
+            int neighbor = road.destination_city_index;
             // If this vertex was not visited, mark it visited, and add it to the queue
             if (!visited[neighbor]) {
                 visited[neighbor] = true;
@@ -161,12 +161,12 @@ bool Graph::checkCycle()
 void Graph::printGraph()
 {
     cout << "Graph:" << endl;
-    for (int i = 0; i < numVerts; i++)
+    for (int i = 0; i < numCities; i++)
     {
         cout << i << ": ";
         for(auto j = adjList[i].begin(); j != adjList[i].end(); ++j)
         {
-            cout << (*j).to_vertex << " " ;
+            cout << (*j).destination_city_index << " " ;
         }
         cout << endl;
     }

@@ -5,6 +5,8 @@
 #include <list>
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 int main(int argc, char* argv[]) {
@@ -33,8 +35,9 @@ int main(int argc, char* argv[]) {
         string id, code, name;
         int population, elevation;
         ss >> id >> code >> name >> population >> elevation;
-        City city(id, code, name, population, elevation);
-        graph.addCity(city);
+        City newCity = City(id, code, name, population, elevation);
+        // TODO : modify graph to add a city object instead of a vertex
+        graph.addCity(newCity);
     }
 
     // Read road data

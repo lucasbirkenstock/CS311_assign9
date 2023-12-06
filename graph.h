@@ -10,35 +10,32 @@
 #include <iostream>
 using namespace std;
 
-/**
- * @brief Vertex class
- * 
- */
-class Vertex {
-public:
-    // The index of the vertex. starting from 0
-    int id;
-    // The name of the vertex. Additional attributes can be added
-    string name;
+class City {
+    private: 
+    // Member variables
+    std::string mId, mCode, mName;
+    int mPopulation, mElevation;
 
-    Vertex(int id = 0, string name="") {
-        this->id = id;
-        this->name = name;
+    public: 
+    // Constructor
+    City(std::string id, std::string code, std::string name, int population, int elevation) {
+        mId = id;
+        mCode = code;
+        mName = name;
+        mPopulation = population;
+        mElevation = elevation;
     }
 };
 
-/**
- * @brief Edge class. It represents an edge from one vertex to another
- * 
- */
-struct Edge {
-    int from_vertex; // The index of the vertex where the edge starts
-    int to_vertex; // index of the vertex where the edge ends.
+struct Road {
+    int origin_city_index; // The index of the vertex where the edge starts
+    int destination_city_index; // index of the vertex where the edge ends.
     float weight; // The weight of the edge. Additional attributes can be added
 
-    Edge(int from_vertex = 0, int to_vertex = 0, float weight = 0) {
-        this->from_vertex = from_vertex;
-        this->to_vertex = to_vertex;
+    // Constructor
+    Road(int from_city = 0, int to_city = 0, float weight = 0) {
+        this->origin_city_index = from_city;
+        this->destination_city_index = to_city;
         this->weight = weight;
     }
 };
@@ -51,13 +48,13 @@ struct Edge {
 class Graph
 {
 public:
-    int numVerts;    // No. of vertices
-    vector<Vertex> vertices; // The list of vertices
-    vector<vector<Edge>> adjList; // The adjacency list
+    int numCities;    // No. of vertices
+    vector<City> citiesList; // The list of vertices
+    vector<vector<Road>> adjList; // The adjacency list
 
     // Default constructor. Create an empty graph
     Graph() {
-        numVerts = 0;
+        numCities = 0;
     }
 
     // Constructor. Create a graph with n vertices
@@ -71,7 +68,7 @@ public:
      * @brief Add a vertex to the graph
      * @param v The vertex to be added
      */
-    void addVertex(Vertex v);
+    void addCity(City c);
 
     /**
      * @brief Add a directed edge from v1 to v2 to the graph
@@ -80,14 +77,14 @@ public:
      * @param v2 The index of the vertex where the edge ends
      * @param weight The weight of the edge
      */
-    void addDirectedEdge(int v1, int v2, float weight = 1.0f);
+    void addDirectedRoad(int v1, int v2, float weight = 1.0f);
 
     /**
      * @brief Add an undirected edge to the graph. An undirected edge is represented by two directed edges.
      * @param v1 The index of the first vertex
      * @param v2 The index of the second vertex
      */
-     void addUndirectedEdge(int v1, int v2, float weight = 1.0f);
+     void addUndirectedRoad(int v1, int v2, float weight = 1.0f);
 
     /**
      * @brief the number of outgoing edges from vertex v
