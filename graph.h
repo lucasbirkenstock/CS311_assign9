@@ -35,6 +35,27 @@ class City {
            << "Population: " << mPopulation << "\n"
            << "Elevation: " << mElevation << "\n"; 
     }
+
+     // Getter methods
+    std::string getId() const {
+        return mId;
+    }
+
+    std::string getCode() const {
+        return mCode;
+    }
+
+    std::string getName() const {
+        return mName;
+    }
+
+    int getPopulation() const {
+        return mPopulation;
+    }
+
+    int getElevation() const {
+        return mElevation;
+    }
 };
 
 struct Road {
@@ -47,6 +68,10 @@ struct Road {
         this->origin_city_index = from_city;
         this->destination_city_index = to_city;
         this->weight = weight;
+    }
+
+    void printRoadInfo() {
+        cout << "Road from index " << origin_city_index << " to index " << destination_city_index << " with distance " << weight << endl;
     }
 };
 

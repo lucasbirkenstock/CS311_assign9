@@ -35,18 +35,44 @@ int main(int argc, char* argv[]) {
         ss >> id >> code >> name >> population >> elevation;
         City newCity = City(id, code, name, population, elevation);
         graph.addCity(newCity);
-        newCity.printCityInfo();
+        //newCity.printCityInfo();
     }
 
-    // // Read road data
-    // while (getline(road_file, line)) {
-    //     stringstream ss(line);
-    //     string from, to;
-    //     int distance;
-    //     ss >> from >> to >> distance;
-    //     Road road(from, to, distance);
-    //     graph.addDirectedRoad(road);
-    // }
+
+    // Read road data
+    // Road format from text file: from_city, to_city, distance
+    while (getline(road_file, line)) {
+    stringstream ss(line);
+    string from_city_code, to_city_code;
+    int distance;
+    ss >> from_city_code >> to_city_code >> distance;
+
+    // Find the indices of the cities with the given codes in the citiesList
+    int from_city_index = -1;
+    int to_city_index = -1;
+
+    for (int i = 0; i < graph.numCities; ++i) {
+        if (graph.citiesList[i].getId() == from_city_code) {
+            from_city_index = i;
+        } else if (graph.citiesList[i].getId() == to_city_code) {
+            to_city_index = i;
+        }
+
+        // Break out of the loop if both cities are found
+        if (from_city_index != -1 && to_city_index != -1) {
+            break;
+        }
+    }
+
+    // Check if both cities were found
+    if (from_city_index != -1 && to_city_index != -1) {
+        // Add a directed road to the graph
+        graph.addDirectedRoad(from_city_index, to_city_index, distance);
+        Road(from_city_index, to_city_index, distance).printRoadInfo();
+    } else {
+        cerr << "Error: City not found for road: " << from_city_code << " to " << to_city_code << endl;
+    }
+}
 
     // // Find the shortest route
     // int shortest_distance = graph.shortestRoute(from_city_code, to_city_code);
