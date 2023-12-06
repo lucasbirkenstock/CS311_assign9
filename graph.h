@@ -17,6 +17,8 @@ class City {
     int mPopulation, mElevation;
 
     public: 
+    // Default constructor
+    City() : mId(""), mCode(""), mName(""), mPopulation(0), mElevation(0){}
     // Constructor
     City(std::string id, std::string code, std::string name, int population, int elevation) {
         mId = id;
@@ -24,6 +26,14 @@ class City {
         mName = name;
         mPopulation = population;
         mElevation = elevation;
+    }
+
+    void printCityInfo() {
+        cout << "City ID: " << mId << "\n"
+           << "City Code: " << mCode << "\n"
+           << "City Name: " << mName << "\n"
+           << "Population: " << mPopulation << "\n"
+           << "Elevation: " << mElevation << "\n"; 
     }
 };
 
