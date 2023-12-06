@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         ss >> id >> code >> name >> population >> elevation;
         City newCity = City(id, code, name, population, elevation);
         graph.addCity(newCity);
-        //newCity.printCityInfo();
+        //newCity.printCityInfo(); // Debugging: Print city info as it's added to the graph
     }
 
 
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
     if (from_city_index != -1 && to_city_index != -1) {
         // Add a directed road to the graph
         graph.addDirectedRoad(from_city_index, to_city_index, distance);
-        Road(from_city_index, to_city_index, distance).printRoadInfo();
+        // Road(from_city_index, to_city_index, distance).printRoadInfo(); // Debugging: print road info as it's added to the graph
     } else {
         cerr << "Error: City not found for road: " << from_city_code << " to " << to_city_code << endl;
     }
