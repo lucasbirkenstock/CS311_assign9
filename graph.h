@@ -172,6 +172,8 @@ public:
      */
     bool dfsCheckCycle(int v, vector<bool>& visited, int parent);
 
+    int getCityIndex(const Graph& graph, const string& cityCode);
+
 };
 
 

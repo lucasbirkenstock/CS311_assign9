@@ -74,29 +74,34 @@ int main(int argc, char* argv[]) {
     }
 }
 
-    // // Find the shortest route
-    // int shortest_distance = graph.shortestRoute(from_city_code, to_city_code);
+ // Need to go from abbreviation to ID number
+ // Assuming the cities are added in the order of their indices
+    int startCityIndex;
+    int endCityIndex;
 
-    // // Print results
-    // cout << "Author: xxx, xxx and xxxx" << endl;
-    // cout << "Date: xx/xx/20xx" << endl;
-    // cout << "Course: CS311 (Data structures and Algorithms)" << endl;
-    // cout << "Description: Program to find the shortest route between cities" << endl;
-    // cout << "----------------------------------------------------------------" << endl;
-    // cout << "From City: " << graph.cities[from_city_code].City_Name << ", population "
-    //      << graph.cities[from_city_code].Population << ", elevation " << graph.cities[from_city_code].Elevation << endl;
-    // cout << "To City: " << graph.cities[to_city_code].City_Name << ", population "
-    //      << graph.cities[to_city_code].Population << ", elevation " << graph.cities[to_city_code].Elevation << endl;
+    for (int i = 0; i < graph.numCities; i++ ) {
+        if (graph.citiesList[i].getCode() == from_city_code) {
+            startCityIndex = i;
+        } else if (graph.citiesList[i].getCode() == to_city_code) {
+            endCityIndex = i;
+        }
+    }
 
-    // if (shortest_distance == numeric_limits<int>::max()) {
-    //     cout << "No route from " << graph.cities[from_city_code].City_Name << " to "
-    //          << graph.cities[to_city_code].City_Name << endl;
-    // } else {
-    //     cout << "The shortest distance from " << graph.cities[from_city_code].City_Name << " to "
-    //          << graph.cities[to_city_code].City_Name << " is " << shortest_distance << endl;
-    //     cout << "through the route: "; // print the route here
-    // }
+    if (startCityIndex != -1 && endCityIndex != -1) {
+        vector<int> shortestPath = graph.shortestRoute(startCityIndex, endCityIndex);
 
+        // Print the shortest path
+        cout << "Shortest Path from " << from_city_code << " to " << to_city_code << ": ";
+        for (int cityIndex : shortestPath) {
+            cout << graph.citiesList[cityIndex].getName() << " ";
+        }
+        cout << endl;
+    } else {
+        cerr << "Error: One or both cities not found." << endl;
+    }
+
+
+   
     return 0;
 }
 

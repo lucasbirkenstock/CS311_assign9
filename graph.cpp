@@ -2,6 +2,7 @@
 #include <stack>
 #include <algorithm>
 #include <queue>
+#include <climits>
 
 // @brief Construct a Graph with the given number of vertices.
 // @param nV The number of vertices in the graph.
@@ -263,5 +264,14 @@ void Graph::printGraph()
         cout << endl;
     }
     cout << endl;
+}
+
+int getCityIndex(const Graph& graph, const string& cityCode) {
+    for (int i = 0; i < graph.numCities; ++i) {
+        if (graph.citiesList[i].getCode() == cityCode) {
+            return i;
+        }
+    }
+    return -1;  // City not found
 }
 
