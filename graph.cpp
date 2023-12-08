@@ -1,6 +1,7 @@
 #include "graph.h"
 #include <stack>
 #include <algorithm>
+#include <queue>
 
 // @brief Construct a Graph with the given number of vertices.
 // @param nV The number of vertices in the graph.
@@ -147,14 +148,105 @@ std::vector<int> Graph::BreadthFirstSearch(int v) {
     return result;
 }
 
+
 /**
  * @brief Check if the graph has cycles
  * @return true if the graph has cycles
  */
 bool Graph::checkCycle()
 {
-    // I will not be doing this one.
-    return false;
+    vector<bool> visited(numCities, false);
+    //iterate through all vertices
+    for (int i = 0; i < numCities; ++i) {
+        //if vertex is not visited and dfsCheckCycle return true, a cycle is found
+        if (!visited[i] && dfsCheckCycle(i, visited, -1)) {  //, adjList
+            return true;
+        }
+    }
+
+    return false; //no cycle detected
+}
+
+/**
+ * @brief Utility function for DFS traversal to detect a cycle
+ * @param v The current vertex being visited
+ * @param visited A reference to a vector that tracks visited vertices
+ * @param parent The parent vertex of the current vertex
+ * @return true if a cycle is detected, false otherwise
+ */
+bool Graph::dfsCheckCycle(int v, vector<bool>& visited, int parent) 
+{
+    visited[v] = true;
+    //iterate through all adjacent vertices
+    for (const auto& road : adjList[v]) {
+        int u = road.destination_city_index; //adjacent vertex
+
+        if (!visited[u]) {
+            //recursively call dfsCheckCycle on unvisited vertex
+            if (dfsCheckCycle(u, visited, v)) { 
+                return true;
+            }
+        } else if (u != parent) {
+            //if adjacent vertex is visited and not parent, cycle detected
+            return true;
+        }
+    }
+    
+    return false; //no cycle detected
+
+}
+
+/**
+ * @brief Function to find the shortest route between two cities
+ * @param startCityIndex The index of the starting city
+ * @param endCityIndex The index of the destination city
+ * @return A vector containing the indices of the cities along the shortest route
+ */
+vector<int> Graph::shortestRoute(int startCityIndex, int endCityIndex)
+{
+    //priority queue to store vertices that are being preprocessed
+    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > >pq;
+    //create a vector for distances and initialize all distances as infinite (INT_MAX)
+    vector<int> dist(numCities, INT_MAX);
+    //vector to store shortest path tree
+    vector<int> prev(numCities, -1);
+
+    pq.push(make_pair(0, startCityIndex));
+    dist[startCityIndex] = 0;
+
+    while(!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        //'u' is finalized, now consider all adjacent vertices of 'u'
+        for (const auto& road:adjList[u]) {
+            int v = road.destination_city_index;
+            int weight = road.weight;
+
+            //if there is a shorter path to 'v' through 'u'
+            if (dist[v] > dist[u] + weight) {
+                dist[v] = dist[u] + weight;
+                prev[v] = u;
+                pq.push(make_pair(dist[v], v));
+            }
+        }
+    }
+
+    //reconstruct the shortest path from endCityIndex to startCityIndex
+    vector<int> path;
+    for (int at = endCityIndex; at != -1; at = prev[at]) {
+        path.push_back(at);
+    }
+
+    reverse(path.begin(), path.end());
+
+    //if path contains only the startCityIndex, no path was found
+    if (path.size() == 1 && path[0] == startCityIndex) {
+        //no path found
+        path.clear();
+    }
+
+    return path;
 }
 
 // @brief print the graph
