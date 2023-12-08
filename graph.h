@@ -155,6 +155,23 @@ public:
       */
     void printGraph();
 
+    /**
+     * @brief Find the shortest route between two cities in a weighted graph
+     * @param startCityIndex The index of the starting city in the graph
+     * @param endCityIndex The index of the destination city in the graph
+     * @return A vector containing the indices of the cities along the shortest route, or an empty vector if no route exists
+     */
+    vector<int> shortestRoute(int startCityIndex, int endCityIndex);
+
+    /**
+     * @brief Perform a Depth-First Search (DFS) to detect cycles in an undirected graph
+     * @param v The current vertex being visited
+     * @param visited A reference to a vector that tracks visited vertices
+     * @param parent The index of the parent vertex of the current vertex
+     * @return true if a cycle is detected, false otherwise
+     */
+    bool dfsCheckCycle(int v, vector<bool>& visited, int parent);
+
 };
 
 
