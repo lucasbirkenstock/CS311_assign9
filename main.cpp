@@ -38,6 +38,33 @@ int main(int argc, char* argv[]) {
         //newCity.printCityInfo(); // Debugging: Print city info as it's added to the graph
     }
 
+    bool isValidInput = false;
+
+    for (long unsigned int i = 0; i < graph.citiesList.size(); i++) {
+        if (argv[1] == graph.citiesList[i].getCode()) {
+            isValidInput = true;
+            break;
+        }        
+    } 
+
+    if (!isValidInput) {
+        cerr << "Invalid city code: " << argv[1] << endl;
+        return 0;
+    }
+
+    isValidInput = false;
+
+    for (long unsigned int i = 0; i < graph.citiesList.size(); i++) {
+        if (argv[2] == graph.citiesList[i].getCode()) {
+            isValidInput = true;
+            break;
+        }        
+    } 
+
+    if (!isValidInput) {
+        cerr << "Invalid city code: " << argv[2] << endl;
+        return 0;
+    }
 
     // Read road data
     // Road format from text file: from_city, to_city, distance
@@ -92,7 +119,7 @@ int main(int argc, char* argv[]) {
     int weight_sum = 0;
     
     // For each city in the shortest path
-    for (int i = 0; i < shortestPath.size() - 1; i++) {
+    for (long unsigned int i = 0; i < shortestPath.size() - 1; i++) {
         // Shortestpath[i] returns city ID (first column)
         int currentIndex = shortestPath[i];
         int nextIndex = shortestPath[i + 1];
