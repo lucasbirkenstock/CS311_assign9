@@ -88,18 +88,35 @@ int main(int argc, char* argv[]) {
     }
 
     if (startCityIndex != -1 && endCityIndex != -1) {
-        vector<int> shortestPath = graph.shortestRoute(startCityIndex, endCityIndex);
+    vector<int> shortestPath = graph.shortestRoute(startCityIndex, endCityIndex);
+    int weight_sum = 0;
+    
+    // For each city in the shortest path
+    for (int i = 0; i < shortestPath.size() - 1; i++) {
+        // Shortestpath[i] returns city ID (first column)
+        int currentIndex = shortestPath[i];
+        int nextIndex = shortestPath[i + 1];
 
-        // Print the shortest path
-        cout << "Shortest Path from " << from_city_code << " to " << to_city_code << ": ";
-        for (int cityIndex : shortestPath) {
-            cout << graph.citiesList[cityIndex].getName() << " ";
+        for (const auto &road : graph.adjList[currentIndex]) {
+            if (road.destination_city_index == nextIndex) {
+                // Found the road that connects the current city to the next city
+                // Add its weight to the total sum
+                weight_sum += road.weight;
+                break;
+            }
         }
-        cout << endl;
-    } else {
-        cerr << "Error: One or both cities not found." << endl;
     }
 
+    // Print the shortest path
+    cout << "Shortest Path from " << from_city_code << " to " << to_city_code << ": ";
+    for (int cityIndex : shortestPath) {
+        cout << graph.citiesList[cityIndex].getName() << " ";
+    }
+    cout << endl << "The shortest distance from " << from_city_code << " to " << to_city_code<< " is: " << weight_sum;
+    cout << endl;
+} else {
+    cerr << "Error: One or both cities not found." << endl;
+}
 
    
     return 0;
