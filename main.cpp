@@ -134,12 +134,25 @@ int main(int argc, char* argv[]) {
         }
     }
 
+
+    // output
+    cout << "Author: Lucas Birkenstock, xxx and xxxx" << endl;
+    cout << "Date: 12/08/2023" << endl;
+    cout << "Course: CS311 (Data structures and Algorithms)" << endl;
+    cout << "Description : Program to find the shortest route between cities" << endl;
+    cout << "----------------------------------------------------------------" << endl;
+    cout << "From City: " << graph.citiesList[startCityIndex].getName() << ", population " << graph.citiesList[startCityIndex].getPopulation() 
+    << ", elevation " << graph.citiesList[startCityIndex].getElevation() << endl;
+    cout << "To City: " << graph.citiesList[endCityIndex].getName() << ", population " << graph.citiesList[endCityIndex].getPopulation() 
+    << ", elevation " << graph.citiesList[endCityIndex].getElevation() << endl << endl << endl;
+
+
     // Print the shortest path
-    cout << "Shortest Path from " << from_city_code << " to " << to_city_code << ": ";
+    cout << "Shortest Path from " << graph.citiesList[startCityIndex].getName() << " to " << graph.citiesList[endCityIndex].getName() << ": ";
     for (int cityIndex : shortestPath) {
         cout << graph.citiesList[cityIndex].getName() << " ";
     }
-    cout << endl << "The shortest distance from " << from_city_code << " to " << to_city_code<< " is: " << weight_sum;
+    cout << endl << "The shortest distance from " << graph.citiesList[startCityIndex].getName() << " to " << graph.citiesList[endCityIndex].getName() << " is: " << weight_sum;
     cout << endl;
 } else {
     cerr << "Error: One or both cities not found." << endl;
