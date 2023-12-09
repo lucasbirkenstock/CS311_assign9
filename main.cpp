@@ -8,17 +8,20 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+    // Error code for invalid input
     if (argc != 3) {
         cerr << "Usage: " << argv[0] << " <from_city_code> <to_city_code>" << endl;
         return 1;
     }
-
+    // Store command line input
     string from_city_code = argv[1];
     string to_city_code = argv[2];
 
+    // Preparations for reading input files
     ifstream city_file("city.txt");
     ifstream road_file("road.txt");
 
+    // Error code for being unable to open either file
     if (!city_file || !road_file) {
         cerr << "Error: Unable to open data files." << endl;
         return 1;
@@ -33,20 +36,24 @@ int main(int argc, char* argv[]) {
         string id, code, name;
         int population, elevation;
         ss >> id >> code >> name >> population >> elevation;
+
+        // Create new city object from data read in, add it to the graph
         City newCity = City(id, code, name, population, elevation);
         graph.addCity(newCity);
         //newCity.printCityInfo(); // Debugging: Print city info as it's added to the graph
     }
 
+    // Boolean for checking valid input
     bool isValidInput = false;
 
+    // Check if city code 1 from command line matches anything in the city list
     for (long unsigned int i = 0; i < graph.citiesList.size(); i++) {
         if (argv[1] == graph.citiesList[i].getCode()) {
             isValidInput = true;
             break;
         }        
     } 
-
+    // Exit program if it doesn't, print error code
     if (!isValidInput) {
         cerr << "Invalid city code: " << argv[1] << endl;
         return 0;
@@ -54,6 +61,7 @@ int main(int argc, char* argv[]) {
 
     isValidInput = false;
 
+    // Check if city code 2 from command line matches anything in the city list
     for (long unsigned int i = 0; i < graph.citiesList.size(); i++) {
         if (argv[2] == graph.citiesList[i].getCode()) {
             isValidInput = true;
@@ -61,6 +69,7 @@ int main(int argc, char* argv[]) {
         }        
     } 
 
+    // Exit program if it doesn't, print error code
     if (!isValidInput) {
         cerr << "Invalid city code: " << argv[2] << endl;
         return 0;
@@ -78,6 +87,7 @@ int main(int argc, char* argv[]) {
     int from_city_index = -1;
     int to_city_index = -1;
 
+    // Iterate through the list of cities added to the graph, and if the city's code matches the command line input code, update from/to_city_index variables
     for (int i = 0; i < graph.numCities; ++i) {
         if (graph.citiesList[i].getId() == from_city_code) {
             from_city_index = i;
@@ -106,6 +116,7 @@ int main(int argc, char* argv[]) {
     int startCityIndex;
     int endCityIndex;
 
+    // 
     for (int i = 0; i < graph.numCities; i++ ) {
         if (graph.citiesList[i].getCode() == from_city_code) {
             startCityIndex = i;
@@ -114,8 +125,11 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    // If indices are valid, 
     if (startCityIndex != -1 && endCityIndex != -1) {
+    // Calculate the shortest route between the two cities
     vector<int> shortestPath = graph.shortestRoute(startCityIndex, endCityIndex);
+    // Store route length
     int weight_sum = 0;
     
     // For each city in the shortest path
