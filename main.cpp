@@ -146,7 +146,11 @@ int main(int argc, char* argv[]) {
     cout << "To City: " << graph.citiesList[endCityIndex].getName() << ", population " << graph.citiesList[endCityIndex].getPopulation() 
     << ", elevation " << graph.citiesList[endCityIndex].getElevation() << endl << endl << endl;
 
-
+    // If no path exists
+    if (weight_sum == 0) {
+        cout << "No route from " << graph.citiesList[startCityIndex].getName() << " to " << graph.citiesList[endCityIndex].getName() << endl;
+        return 0;
+    }
     // Print the shortest path
     cout << "Shortest Path from " << graph.citiesList[startCityIndex].getName() << " to " << graph.citiesList[endCityIndex].getName() << ": ";
     for (int cityIndex : shortestPath) {
